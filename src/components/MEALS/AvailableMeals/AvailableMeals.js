@@ -36,6 +36,7 @@ const AvailableMeals = () => {
   // jsx elements and storing it so we can have cleaner jsx below
   const mealList = DUMMY_MEALS.map((meal) => (
     <MealItem
+      id={meal.id}
       key={meal.id}
       name={meal.name}
       desc={meal.description}

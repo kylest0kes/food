@@ -11,6 +11,8 @@ const HeaderButton = (props) => {
   // now we can call the useContext hook and pass it the context for the cart in the file we set up, 
   // and we store it in a var
   const cartCtx = useContext(CartContext);
+
+  // here we grab the items from the cart Context, so it can be referenced directly
   const { items } = cartCtx;
 
   // we set this var up so we can set the amount of the items in the cart properly, as we can have a time 
@@ -25,7 +27,6 @@ const HeaderButton = (props) => {
   }, 0);
 
   // some code for the cart button animation
-
   const btnClasses = `${classes.button} ${btnAnimate ? classes.bump : ''}`;
 
   useEffect(() => {

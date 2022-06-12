@@ -1,7 +1,8 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import Cart from "./components/CART/Cart/Cart";
 import Header from "./components/LAYOUT/Header/Header";
 import Meals from "./components/MEALS/Meals/Meals";
+import CartProvider from "./store/CartProvider";
 
 function App() {
   // here we set up some state for showing the car
@@ -17,14 +18,16 @@ function App() {
   }
 
   return (
-    <Fragment>
+    // now i can wrap everything in the CartProvider componenet, giving everything inside, access to the
+    // provider data
+    <CartProvider>
       {/* here we can use a little shortcut to show the cart component based on the state of \cartVisible */}
       {cartVisible && <Cart onHideCart={hideCartHandler} />}
       <Header onShowCart={showCartHandler} />
       <main>
         <Meals />
       </main>
-    </Fragment>
+    </CartProvider>
   );
 }
 

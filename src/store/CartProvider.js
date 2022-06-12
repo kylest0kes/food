@@ -16,8 +16,45 @@ const cartReducer = (state, action) => {
         // if the action is add, we want to get a new list of the items (as it is important to not change
         // the existing state, but to work and update a new copy), as well as an updated total amount
         // of items in the cart
-        const updatedItems = state.items.concat(action.item);
         const updatedTotalAmount = state.totalAmount + action.item.price * action.item.amount;
+        
+        // in between doing this, we want to check and see if the item being added to the cart, already is
+        // in the cart. we can do this by calling findIndex (a built in JS method) that finds an index of
+        // an item in an array. this method takes a function that should return true if the index is
+        // the item we are looking for and false if its not
+        const exists = state.items.findIndex(item => item.id === action.item.id)
+
+        // then we get the item that we are looking for, by using the index we got from the exists var
+        // above
+        const existingItem = state.items[exists];
+
+        // here is a helper var for some of the logic being implemented below
+        let updatedItems;
+
+        // here we check to see if there is an existing item in the cart. if there is not, the existingItem
+        // var will be undefined, and this code wont run
+        if (existingItem) {
+            // if the item is in the card, we want to copy all of that items info, and only update the amount
+            // to reflect the update made by the user
+            const updatedItem = {
+                ...existingItem,
+                amount: existingItem.amount + action.item.amount
+            };
+
+            // then we want to update the items in the cart array to have all the items from the cart state
+            // we have in the reducer, this ensures we are working with a new copy and not updating the
+            // existing state
+            updatedItems = [...state.items]
+
+            // then in the updated items array, we want to find the item that needs to be updated by using 
+            // the index we got above, and we set it to the new updated item in the updatedItem var
+            updatedItems[exists] = updatedItem;
+        } else {
+            // now if it is the first time the item is added to the array, we will hit this block
+            // which now we will concat the item into the carts reducer state items array
+            updatedItems = state.items.concat(action.item);
+        }
+        
         
         // now we can update the state with all of the info we have here
         return {

@@ -26,6 +26,7 @@ const HeaderButton = (props) => {
             <CartIcon />
         </span>
         <span>Your Cart</span>
+        {/* now we can use the cartQuantity var in place of the hardcoded value */}
         <span className={classes.badge}>{cartQuantity}</span>
     </button>
   )

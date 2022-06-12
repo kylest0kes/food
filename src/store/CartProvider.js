@@ -41,25 +41,25 @@ const CartProvider = props => {
     const [cartState, dispatchCartAction] = useReducer(cartReducer, defalutState);
 
     // here we can set up the functions that we will pass to the context 
-    const addItemHandler = id => {
+    const addItemHandler = item => {
         // now we can call the function declared above from the useReducer hook, to dispatch an action
         // and adjust the state accordingly
         // we set up the action as an object that takes in a type and what we want to send, which is the
-        // id that we take in from the function to be able to remove the chosen item
+        // item that we take in from the function to be able to remove the chosen item
         dispatchCartAction({
             type: 'ADD',
-            id: id
+            item: item
         });
     };
 
-    const removeItemHandler = item => {
+    const removeItemHandler = id => {
         // now we can call the function declared above from the useReducer hook, to dispatch an action
         // and adjust the state accordingly
         // we set up the action as an object that takes in a type and what we want to send, which is the
-        // item that we take in from the function
+        // id that we take in from the function
         dispatchCartAction({
             type: 'DELETE',
-            item: item
+            id: id
         });
     };
     

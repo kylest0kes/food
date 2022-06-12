@@ -15,11 +15,15 @@ const Cart = (props) => {
 
   // here we set up the add and remove functions for the cart item to use
   const cartItemAddHandler = (item) => {
-
+    // since the adding logic already exists in the cart context, we can just call it here and spread
+    // all the items data into the function, and change the amount to 1
+    cartCtx.addItem({...item, amount: 1})
   };
 
   const cartItemRemoveHandler = (id) => {
-
+    // since the adding logic already exists in the cart context, we can just call it here and spread
+    // all the items data into the function, 
+    cartCtx.removeItem(id);
   };
 
   const cartItems = (

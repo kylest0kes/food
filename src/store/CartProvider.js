@@ -62,7 +62,47 @@ const cartReducer = (state, action) => {
             totalAmount: updatedTotalAmount
         } 
     } 
-    if (action.type === 'DELETE') {
+    if (action.type === 'REMOVE') {
+        // to handle deleting, there is an important thing to take into account. if it exists more than
+        // once, we want to just adjust the amount to reflect going down by 1, if its only there once,
+        // we want to remove it entirely
+
+        // to do that, we first need to get the index of the item we are looking to deal with
+        const existingIndex = state.items.findIndex(item => item.id === action.id)
+
+        // then we can get the specific item using the index retrieved from above
+        const existingItem = state.items[existingIndex];
+
+        // then we get the updated total amount
+        const updatedTotalAmount = state.totalAmount - existingItem.price;
+
+        // here is a helper var to be able to set the updatedItems
+        let updatedItems;
+
+        // then we can run a check for if the items amount is equal to 1 or not
+        if (existingItem.amount === 1) {
+            // if the item has only 1 item amount, we will call the filter method to return a new 
+            // array of items in the cart, but it will leave off the item that has the id that is tied
+            // to the action
+            updatedItems = state.items.filter(item => item.id !== action.id)
+        } else {
+            // if we are just removing one of the items that already exists, and there are more left over
+            // we just adjust the amount of the existing item
+            const updatedItem = { ...existingItem, amount: existingItem.amount - 1 }
+
+            // then we set the updatedItems array to a new copy of what is in state
+            updatedItems = [...state.items];
+
+            // then we update the existing item using the index from above
+            updatedItems[existingIndex] = updatedItem;
+        }
+
+        // then we return a new state object where the items are the updatedItems array, and the updated 
+        // total amount is the updatedTotalAmount
+        return {
+            items: updatedItems,
+            totalAmount: updatedTotalAmount
+        }
 
     }
     // this function returns a new state, so we set it to have the defaultState from above, if none of the
@@ -95,7 +135,7 @@ const CartProvider = props => {
         // we set up the action as an object that takes in a type and what we want to send, which is the
         // id that we take in from the function
         dispatchCartAction({
-            type: 'DELETE',
+            type: 'REMOVE',
             id: id
         });
     };
